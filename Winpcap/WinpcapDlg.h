@@ -3,6 +3,10 @@
 //
 
 #pragma once
+#include "afxcmn.h"
+#include "DataLinkLayer.h"
+#include "NetworkLayer.h"
+#include "TransportLayer.h"
 
 
 // CWinpcapDlg dialog
@@ -28,4 +32,11 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnBnClickedOk();
+	CTabCtrl m_tab;
+	CDataLinkLayer m_dataLinkLayer;
+	CNetworkLayer m_networkLayer;
+	CTransportLayer m_transportLayer;
+	afx_msg void OnTcnSelchangeTab(NMHDR *pNMHDR, LRESULT *pResult);
 };
