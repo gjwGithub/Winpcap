@@ -361,6 +361,11 @@ void CDataLinkLayer::OnBnClickedBtnstartLink()
 	m_LengthThread = AfxBeginThread(LengthThreadFunc, (LPVOID)this);
 	m_runBPSThread = true;
 	m_bpsThread = AfxBeginThread(BPSThreadFunc, (LPVOID)this);
+
+	CButton* start = (CButton*)GetDlgItem(ID_BTNSTART_LINK);
+	start->EnableWindow(FALSE);
+	CButton* stop = (CButton*)GetDlgItem(ID_BTNSTOP_LINK);
+	stop->EnableWindow(TRUE);
 }
 
 
@@ -370,6 +375,11 @@ void CDataLinkLayer::OnBnClickedBtnstopLink()
 	// TODO:  在此添加控件通知处理程序代码
 	m_runLengthThread = false;
 	m_runBPSThread = false;
+
+	CButton* start=(CButton*)GetDlgItem(ID_BTNSTART_LINK);
+	start->EnableWindow(TRUE);
+	CButton* stop = (CButton*)GetDlgItem(ID_BTNSTOP_LINK);
+	stop->EnableWindow(FALSE);
 }
 
 
