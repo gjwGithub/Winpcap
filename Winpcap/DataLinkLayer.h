@@ -19,6 +19,9 @@ public:
 	CWinThread* m_LengthThread;
 	CWinThread* m_bpsThread;
 
+	CDialogEx* m_mainForm;
+	CListBox* m_deviceList;
+
 	pcap_if_t *alldevs;
 	pcap_if_t *d;
 	int inum;
@@ -44,5 +47,6 @@ public:
 	afx_msg void OnBnClickedBtnstopLink();
 	unsigned int m_totalLen;
 	int m_column;
+	void setMainForm(CDialogEx* me);
 };
 

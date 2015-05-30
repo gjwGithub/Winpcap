@@ -26,6 +26,7 @@ void CWinpcapDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_TAB, m_tab);
+	DDX_Control(pDX, IDC_LIST, m_deviceList);
 }
 
 BEGIN_MESSAGE_MAP(CWinpcapDlg, CDialogEx)
@@ -54,7 +55,9 @@ BOOL CWinpcapDlg::OnInitDialog()
 	m_tab.InsertItem(1, L"Network Layer");
 	m_tab.InsertItem(2, L"Transport Layer");
 
+	m_dataLinkLayer.setMainForm(this);
 	m_dataLinkLayer.Create(IDD_DATALINKLAYER, GetDlgItem(IDC_TAB));
+	
 	m_networkLayer.Create(IDD_NETWORKLAYER, GetDlgItem(IDC_TAB));
 	m_transportLayer.Create(IDD_TRANSPORTLAYER, GetDlgItem(IDC_TAB));
 
@@ -79,6 +82,8 @@ BOOL CWinpcapDlg::OnInitDialog()
 	
 	//设置默认的选项卡 
 	m_tab.SetCurSel(0);
+
+	addDevices();
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -155,4 +160,46 @@ void CWinpcapDlg::OnTcnSelchangeTab(NMHDR *pNMHDR, LRESULT *pResult)
 	}
 
 	*pResult = 0;
+}
+
+
+void CWinpcapDlg::addDevices()
+{
+	pcap_if_t *alldevs;
+	pcap_if_t *d;
+	int i = 0;
+	char errbuf[PCAP_ERRBUF_SIZE];
+
+	/* Retrieve the device list on the local machine */
+	if (pcap_findalldevs_ex(PCAP_SRC_IF_STRING, NULL, &alldevs, errbuf) == -1)
+	{
+		CString string;
+		string.Format(L"Error in pcap_findalldevs: %s\n", errbuf);
+		AfxMessageBox(string);
+		return;
+	}
+
+	/* Print the list */
+	for (d = alldevs; d; d = d->next)
+	{
+		CString str;
+		if (d->description)
+			str=d->description;
+		else
+			str=" (No description available)\n";
+		m_deviceList.InsertString(i++, str);
+		/*printf("%d. %s", ++i, d->name);
+		if (d->description)
+		printf(" (%s)\n", d->description);
+		else
+		printf(" (No description available)\n");*/
+	}
+
+	if (i == 0)
+	{
+		CString string;
+		string.Format(L"\nNo interfaces found! Make sure WinPcap is installed.\n");
+		AfxMessageBox(string);
+		return;
+	}
 }

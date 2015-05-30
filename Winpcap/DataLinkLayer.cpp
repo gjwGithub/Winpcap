@@ -49,6 +49,8 @@ void CDataLinkLayer::DoDataExchange(CDataExchange* pDX)
 	{
 		m_list.SetColumnWidth(i, rect.Width() / columnCount); //设置列的宽度。
 	}
+
+	m_deviceList = (CListBox*)m_mainForm->GetDlgItem(IDC_LIST);
 }
 
 
@@ -123,48 +125,6 @@ UINT LengthThreadFunc(LPVOID lpParam)
 		me->SetDlgItemTextW(IDC_STATIC_LENGTH, strTotalLen);
 
 		me->m_column++;
-		//printf("%s,%.6d len:%d\n", me->timestr, me->header->ts.tv_usec, me->header->len);
-
-		//printf("Destination MAC: ");
-		//for (int i = 0;i < 6;i++)
-		//{
-		//	printf("%02X-", (int)me->pkt_data[i]);
-		//}
-		//printf("\n");
-		//printf("Send MAC: ");
-		//for (int i = 6;i < 12;i++)
-		//{
-		//	printf("%02X-", (int)me->pkt_data[i]);
-		//}
-		//printf("\n");
-		//printf("Type: ");
-		//for (int i = 12;i < 14;i++)
-		//{
-		//	printf("%c", pkt_data[i]);
-		//}
-		//printf("\n");
-		//printf("Data: ");
-		//for (int i = 14;i < header->len-4;i++)
-		//{
-		//	printf("%c", pkt_data[i]);
-		//}
-		//printf("\n");
-		//printf("FCS: ");
-		//for (int i = header->len - 4;i < header->len;i++)
-		//{
-		//	printf("%c", pkt_data[i]);
-		//}
-		//printf("\n");
-
-
-		
-		//u_int delay;
-		//LARGE_INTEGER Bps;
-		//delay = (header->ts.tv_sec - old_ts.tv_sec) * 1000000 - old_ts.tv_usec + header->ts.tv_usec;
-		///* Get the number of Bits per second */
-		//Bps.QuadPart = (((*(LONGLONG*)(pkt_data + 8)) * 8 * 1000000) / (delay));
-		//old_ts = header->ts;
-		//printf("BPS=%I64u \n", Bps.QuadPart);
 	}
 
 	if (me->res == -1) {
@@ -218,9 +178,22 @@ UINT BPSThreadFunc(LPVOID lpParam)
 		return 0;
 	}
 
+	
+	
 	//printf("Enter the interface number (1-%d):", i);
 	//scanf_s("%d", &inum);
-	inum = 1;
+	int index;
+	index = me->m_deviceList->GetCurSel();
+	if (index == -1)
+	{
+		AfxMessageBox(L"Must select a device!");
+		return 0;
+	}
+	else 
+	{
+		inum = index;
+	}
+	
 
 	//if (inum < 1 || inum > i)
 	//{
@@ -334,7 +307,17 @@ void CDataLinkLayer::OnBnClickedBtnstartLink()
 
 	//printf("Enter the interface number (1-%d):", i);
 	//scanf_s("%d", &inum);
-	inum = 1;
+	int index;
+	index = m_deviceList->GetCurSel();
+	if (index == -1)
+	{
+		AfxMessageBox(L"Must select a device!");
+		return;
+	}
+	else
+	{
+		inum = index;
+	}
 
 	//if (inum < 1 || inum > i)
 	//{
@@ -387,4 +370,10 @@ void CDataLinkLayer::OnBnClickedBtnstopLink()
 	// TODO:  在此添加控件通知处理程序代码
 	m_runLengthThread = false;
 	m_runBPSThread = false;
+}
+
+
+void CDataLinkLayer::setMainForm(CDialogEx* me)
+{
+	m_mainForm = me;
 }

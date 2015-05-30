@@ -7,6 +7,7 @@
 #include "DataLinkLayer.h"
 #include "NetworkLayer.h"
 #include "TransportLayer.h"
+#include "afxwin.h"
 
 
 // CWinpcapDlg dialog
@@ -39,4 +40,6 @@ public:
 	CNetworkLayer m_networkLayer;
 	CTransportLayer m_transportLayer;
 	afx_msg void OnTcnSelchangeTab(NMHDR *pNMHDR, LRESULT *pResult);
+	CListBox m_deviceList;
+	void addDevices();
 };
