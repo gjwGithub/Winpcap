@@ -13,6 +13,8 @@ IMPLEMENT_DYNAMIC(CTransportLayer, CDialog)
 
 CTransportLayer::CTransportLayer(CWnd* pParent /*=NULL*/)
 	: CDialog(CTransportLayer::IDD, pParent)
+	, m_deviceList(NULL)
+	, m_mainForm(NULL)
 {
 
 }
@@ -24,6 +26,27 @@ CTransportLayer::~CTransportLayer()
 void CTransportLayer::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_LIST_TRANS, m_list);
+
+	m_list.SetExtendedStyle(m_list.GetExtendedStyle()
+		| LVS_EX_GRIDLINES
+		| LVS_EX_FULLROWSELECT);
+	m_list.InsertColumn(0, _T("Time"));
+	m_list.InsertColumn(1, _T("Form Port"));
+	m_list.InsertColumn(2, _T("To Port"));
+	m_list.InsertColumn(3, _T("Seq Num"));
+	m_list.InsertColumn(4, _T("Type"));
+	m_list.InsertColumn(5, _T("Length"));
+
+	CRect rect;
+	m_list.GetClientRect(rect); //获得当前客户区信息
+	int columnCount = 6;
+	for (int i = 0; i < columnCount; i++)
+	{
+		m_list.SetColumnWidth(i, rect.Width() / columnCount); //设置列的宽度。
+	}
+
+	m_deviceList = (CListBox*)m_mainForm->GetDlgItem(IDC_LIST);
 }
 
 
@@ -55,4 +78,10 @@ void CTransportLayer::OnBnClickedBtnstopTrans()
 	start->EnableWindow(TRUE);
 	CButton* stop = (CButton*)GetDlgItem(ID_BTNSTOP_TRANS);
 	stop->EnableWindow(FALSE);
+}
+
+
+void CTransportLayer::setMainForm(CDialogEx* me)
+{
+	m_mainForm = me;
 }

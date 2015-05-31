@@ -1,4 +1,5 @@
 #pragma once
+#include "afxcmn.h"
 
 
 // CNetworkLayer ¶Ô»°¿ò
@@ -21,4 +22,8 @@ protected:
 public:
 	afx_msg void OnBnClickedBtnstartNet();
 	afx_msg void OnBnClickedBtnstopNet();
+	CListCtrl m_list;
+	CListBox* m_deviceList;
+	CDialogEx* m_mainForm;
+	void setMainForm(CDialogEx* me);
 };

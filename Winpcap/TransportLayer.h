@@ -1,4 +1,5 @@
 #pragma once
+#include "afxcmn.h"
 
 
 // CTransportLayer ¶Ô»°¿ò
@@ -21,4 +22,8 @@ protected:
 public:
 	afx_msg void OnBnClickedBtnstartTrans();
 	afx_msg void OnBnClickedBtnstopTrans();
+	CListCtrl m_list;
+	CListBox* m_deviceList;
+	CDialogEx* m_mainForm;
+	void setMainForm(CDialogEx* me);
 };

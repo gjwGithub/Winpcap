@@ -58,7 +58,10 @@ BOOL CWinpcapDlg::OnInitDialog()
 	m_dataLinkLayer.setMainForm(this);
 	m_dataLinkLayer.Create(IDD_DATALINKLAYER, GetDlgItem(IDC_TAB));
 	
+	m_networkLayer.setMainForm(this);
 	m_networkLayer.Create(IDD_NETWORKLAYER, GetDlgItem(IDC_TAB));
+
+	m_transportLayer.setMainForm(this);
 	m_transportLayer.Create(IDD_TRANSPORTLAYER, GetDlgItem(IDC_TAB));
 
 	//获得IDC_TABTEST客户区大小 
