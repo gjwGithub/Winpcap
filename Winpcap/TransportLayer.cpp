@@ -62,6 +62,13 @@ END_MESSAGE_MAP()
 void CTransportLayer::OnBnClickedBtnstartTrans()
 {
 	// TODO: Add your control notification handler code here
+	int index;
+	index = m_deviceList->GetCurSel();
+	if (index == -1)
+	{
+		AfxMessageBox(L"Must select a device!");
+		return;
+	}
 
 	CButton* start = (CButton*)GetDlgItem(ID_BTNSTART_TRANS);
 	start->EnableWindow(FALSE);

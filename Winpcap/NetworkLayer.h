@@ -1,5 +1,6 @@
 #pragma once
 #include "afxcmn.h"
+#include "pcap.h"
 
 
 // CNetworkLayer ¶Ô»°¿ò
@@ -26,4 +27,11 @@ public:
 	CListBox* m_deviceList;
 	CDialogEx* m_mainForm;
 	void setMainForm(CDialogEx* me);
+	CWinThread* m_IPv4Thread;
+	CWinThread* m_IPv6Thread;
+	CWinThread* m_ARPThread;
+	bool m_runIPv4Thread;
+	bool m_runIPv6Thread;
+	bool m_runARPThread;
+	int m_column;
 };

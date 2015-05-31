@@ -158,26 +158,6 @@ UINT BPSThreadFunc(LPVOID lpParam)
 		AfxMessageBox(string);
 		return 0;
 	}
-
-	/* Print the list */
-	for (d = alldevs; d; d = d->next)
-	{
-		++i;
-		/*printf("%d. %s", ++i, d->name);
-		if (d->description)
-		printf(" (%s)\n", d->description);
-		else
-		printf(" (No description available)\n");*/
-	}
-
-	if (i == 0)
-	{
-		CString string;
-		string.Format(L"\nNo interfaces found! Make sure WinPcap is installed.\n");
-		AfxMessageBox(string);
-		return 0;
-	}
-
 	
 	
 	//printf("Enter the interface number (1-%d):", i);
@@ -282,25 +262,6 @@ void CDataLinkLayer::OnBnClickedBtnstartLink()
 	{
 		CString string;
 		string.Format(L"Error in pcap_findalldevs: %s\n", errbuf);
-		MessageBox(string, L"ERROR");
-		return;
-	}
-
-	/* Print the list */
-	for (d = alldevs; d; d = d->next)
-	{
-		++i;
-		/*printf("%d. %s", ++i, d->name);
-		if (d->description)
-			printf(" (%s)\n", d->description);
-		else
-			printf(" (No description available)\n");*/
-	}
-
-	if (i == 0)
-	{
-		CString string;
-		string.Format(L"\nNo interfaces found! Make sure WinPcap is installed.\n");
 		MessageBox(string, L"ERROR");
 		return;
 	}
