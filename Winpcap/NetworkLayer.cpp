@@ -65,6 +65,9 @@ END_MESSAGE_MAP()
 
 // CNetworkLayer 消息处理程序
 
+bool isWaitingForIPv4Init = true;
+bool isWaitingForIPv6Init = true;
+
 UINT IPv4ThreadFunc(LPVOID lpParam)
 {
 	CNetworkLayer* me = (CNetworkLayer*)lpParam;
@@ -152,6 +155,10 @@ UINT IPv4ThreadFunc(LPVOID lpParam)
 		return 0;
 	}
 
+	pcap_freealldevs(alldevs);
+
+	isWaitingForIPv4Init = false;
+
 	while ((res = pcap_next_ex(adhandle, &header, &pkt_data)) >= 0 && me->m_runIPv4Thread) {
 
 		if (res == 0)
@@ -202,6 +209,8 @@ UINT IPv4ThreadFunc(LPVOID lpParam)
 UINT IPv6ThreadFunc(LPVOID lpParam)
 {
 	CNetworkLayer* me = (CNetworkLayer*)lpParam;
+
+	while (isWaitingForIPv4Init);
 
 	pcap_if_t *alldevs;
 	pcap_if_t *d;
@@ -285,6 +294,10 @@ UINT IPv6ThreadFunc(LPVOID lpParam)
 		/* Free the device list */
 		return 0;
 	}
+
+	pcap_freealldevs(alldevs);
+
+	isWaitingForIPv6Init = false;
 
 	while ((res = pcap_next_ex(adhandle, &header, &pkt_data)) >= 0 && me->m_runIPv6Thread) {
 
@@ -344,6 +357,8 @@ UINT ARPThreadFunc(LPVOID lpParam)
 {
 	CNetworkLayer* me = (CNetworkLayer*)lpParam;
 
+	while (isWaitingForIPv6Init);
+
 	pcap_if_t *alldevs;
 	pcap_if_t *d;
 	int inum;
@@ -426,6 +441,8 @@ UINT ARPThreadFunc(LPVOID lpParam)
 		/* Free the device list */
 		return 0;
 	}
+
+	pcap_freealldevs(alldevs);
 
 	while ((res = pcap_next_ex(adhandle, &header, &pkt_data)) >= 0 && me->m_runIPv6Thread) {
 
@@ -505,6 +522,9 @@ void CNetworkLayer::OnBnClickedBtnstopNet()
 	m_runIPv4Thread = false;
 	m_runIPv6Thread = false;
 	m_runARPThread = false;
+
+	isWaitingForIPv4Init = true;
+	isWaitingForIPv6Init = true;
 
 	CButton* start = (CButton*)GetDlgItem(ID_BTNSTART_NET);
 	start->EnableWindow(TRUE);
