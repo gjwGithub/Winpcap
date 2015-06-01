@@ -1,5 +1,6 @@
 #pragma once
 #include "afxcmn.h"
+#include "pcap.h"
 
 
 // CTransportLayer ¶Ô»°¿ò
@@ -26,4 +27,9 @@ public:
 	CListBox* m_deviceList;
 	CDialogEx* m_mainForm;
 	void setMainForm(CDialogEx* me);
+	bool m_runTCPThread;
+	bool m_runUDPThread;
+	CWinThread* m_TCPThread;
+	CWinThread* m_UDPThread;
+	int m_column;
 };
