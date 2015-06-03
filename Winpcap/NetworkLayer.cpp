@@ -422,7 +422,7 @@ UINT ARPThreadFunc(LPVOID lpParam)
 	u_int netmask = 0xffffff;
 
 	//compile the filter
-	if (pcap_compile(adhandle, &fcode, "ip6", 1, netmask) <0)
+	if (pcap_compile(adhandle, &fcode, "arp", 1, netmask) <0)
 	{
 		CString string;
 		string.Format(L"\nUnable to compile the packet filter. Check the syntax.\n");
