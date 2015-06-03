@@ -176,7 +176,7 @@ UINT TCPThreadFunc(LPVOID lpParam)
 		CString fromPort;
 		fromPort.Format(L"%d", (int)pkt_data[0] * 256 + (int)pkt_data[1]);
 		CString seqNum;
-		seqNum.Format(L"%d", (int)pkt_data[4] * 256 * 256 * 256 + (int)pkt_data[5] * 256 * 256 + (int)pkt_data[6] * 256 + (int)pkt_data[7]);
+		seqNum.Format(L"%u", (unsigned int)pkt_data[4] * 256 * 256 * 256 + (unsigned int)pkt_data[5] * 256 * 256 + (unsigned int)pkt_data[6] * 256 + (unsigned int)pkt_data[7]);
 		CString type;
 		type.Format(L"TCP");
 		CString length;
